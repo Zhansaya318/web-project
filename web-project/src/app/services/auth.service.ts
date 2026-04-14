@@ -1,26 +1,59 @@
 import { Injectable } from '@angular/core';
 
+interface User {
+  username: string;
+  email: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   private tokenKey = 'auth_token';
+  private usersKey = 'users';
 
-  login(email: string, password: string): boolean {
+  getUsers(): User[] {
+    const users = localStorage.getItem(this.usersKey);
+    return users ? JSON.parse(users) : [];
+  }
 
-    // fake login (пока без backend)
+  saveUsers(users: User[]) {
+    localStorage.setItem(this.usersKey, JSON.stringify(users));
+  }
 
-    if (email === 'test@test.com' && password === '1234') {
+  register(username: string, email: string, password: string): boolean {
+    const users = this.getUsers();
 
-      const fakeToken = 'fake-jwt-token';
+    const existingUser = users.find(
+      u => u.email === email || u.username === username
+    );
 
-      localStorage.setItem(this.tokenKey, fakeToken);
-
-      return true;
+    if (existingUser) {
+      return false;
     }
 
-    return false;
+    users.push({ username, email, password });
+    this.saveUsers(users);
+    return true;
+  }
+
+  login(identifier: string, password: string): boolean {
+    const users = this.getUsers();
+
+    const user = users.find(
+      u =>
+        (u.email === identifier || u.username === identifier) &&
+        u.password === password
+    );
+
+    if (!user) {
+      return false;
+    }
+
+    localStorage.setItem(this.tokenKey, 'fake-jwt-token');
+    return true;
   }
 
   logout(): void {
@@ -34,5 +67,4 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
-
 }
