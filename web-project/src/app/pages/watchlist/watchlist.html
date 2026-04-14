@@ -1,0 +1,66 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="nav-link" routerLink="/">Movies</a>
+    <a class="nav-link active" routerLink="/watchlist">Watchlist</a>
+  </div>
+
+  <div class="nav-right">
+    <button class="lang-btn">EN</button>
+    <button class="lang-btn">RU</button>
+    <button class="lang-btn">KZ</button>
+
+    <button class="auth-btn" routerLink="/login">Login</button>
+  </div>
+</nav>
+
+<section class="watchlist-header">
+  <div class="header-box">
+    <p class="page-subtitle">Your personal collection</p>
+    <h1>My Watchlist</h1>
+    <p class="page-text">
+      Save movies you want to watch later and keep them all in one place.
+    </p>
+  </div>
+</section>
+
+<section class="watchlist-section" *ngIf="watchlistMovies.length > 0">
+  <div class="section-header">
+    <h2>Saved Movies</h2>
+    <span class="movies-count">{{ watchlistMovies.length }} movies</span>
+  </div>
+
+  <div class="movie-grid">
+    <div class="movie-card" *ngFor="let movie of watchlistMovies">
+      <img [src]="movie.poster" [alt]="movie.title" />
+      <div class="movie-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genre }} • {{ movie.year }}</p>
+        <span class="rating">⭐ {{ movie.rating }}</span>
+
+        <div class="movie-actions">
+          <button
+            class="primary-btn small-btn"
+            [routerLink]="['/movie', movie.id]"
+          >
+            Open
+          </button>
+
+          <button
+            class="danger-btn small-btn"
+            (click)="removeMovie(movie.id)"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="empty-state" *ngIf="watchlistMovies.length === 0">
+  <div class="empty-box">
+    <h2>Your watchlist is empty</h2>
+    <p>You have not saved any movies yet. Start exploring and add some favorites.</p>
+    <button class="primary-btn" routerLink="/">Browse Movies</button>
+  </div>
+</section>

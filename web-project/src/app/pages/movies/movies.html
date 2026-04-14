@@ -1,0 +1,128 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="nav-link active">Movies</a>
+    <a class="nav-link">Watchlist</a>
+  </div>
+
+  <div class="nav-right">
+    <div class="language-switcher">
+      <button class="lang-btn">EN</button>
+      <button class="lang-btn">RU</button>
+      <button class="lang-btn">KZ</button>
+    </div>
+
+    <button class="auth-btn">Login</button>
+
+    <div class="profile-dropdown">
+      <button class="profile-btn">Account ▾</button>
+      <div class="dropdown-menu">
+        <a>My account</a>
+        <a>Favorites</a>
+        <a>Watchlist</a>
+        <a>Change password</a>
+        <a>Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero-section">
+  <div class="hero-content">
+    <p class="hero-subtitle">Movie recommendations for every mood</p>
+    <h1>Discover your next favorite film</h1>
+    <p class="hero-text">
+      Search movies, explore genres, watch trailers, save favorites,
+      and get recommendations in one place.
+    </p>
+
+    <div class="hero-actions">
+      <button class="primary-btn">Browse Movies</button>
+      <button class="secondary-btn">Recommended</button>
+    </div>
+  </div>
+</section>
+
+<section class="filters-section">
+  <div class="search-box">
+    <input type="text" placeholder="Search for a movie..." />
+  </div>
+
+  <div class="filters">
+    <select>
+      <option selected disabled>Select genre</option>
+      <option>Action</option>
+      <option>Drama</option>
+      <option>Sci-Fi</option>
+      <option>Comedy</option>
+      <option>Thriller</option>
+      <option>Romance</option>
+    </select>
+
+    <button class="reset-btn">Reset Filters</button>
+  </div>
+</section>
+
+<section class="recommended-section">
+  <div class="section-header">
+    <h2>Recommended for you</h2>
+    <a class="view-all-link">View all</a>
+  </div>
+
+  <div class="movie-grid recommended-grid">
+  <div class="movie-card" *ngFor="let movie of movies">
+    <img [src]="movie.poster" [alt]="movie.title" />
+    <div class="movie-info">
+      <h3>{{ movie.title }}</h3>
+      <p>{{ movie.genre }} • {{ movie.year }}</p>
+      <span class="rating">⭐ {{ movie.rating }}</span>
+
+      <div class="movie-actions">
+        <button class="primary-btn small-btn" [routerLink]="['/movie', movie.id]">Open</button>
+        <button class="secondary-btn small-btn">Trailer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="all-movies-section">
+  <div class="section-header">
+    <h2>All Movies</h2>
+    <a class="view-all-link">See more</a>
+  </div>
+
+  <div class="movie-grid">
+  <div class="movie-card" *ngFor="let movie of movies">
+    <img [src]="movie.poster" [alt]="movie.title" />
+    <div class="movie-info">
+      <h3>{{ movie.title }}</h3>
+      <p>{{ movie.genre }} • {{ movie.year }}</p>
+      <span class="rating">⭐ {{ movie.rating }}</span>
+
+      <div class="movie-actions">
+        <button class="primary-btn small-btn" [routerLink]="['/movie', movie.id]">Open</button>
+        <button 
+          class="secondary-btn small-btn"
+          (click)="addToWatchlist(movie.id)"
+        >
+          Watchlist
+        </button>
+        <button class="ghost-btn small-btn">Trailer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="trailer-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Movie Trailer</h3>
+      <button class="close-btn">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <p>Trailer will appear here later.</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="nav-link">Movies</a>
+    <a class="nav-link">Watchlist</a>
+  </div>
+
+  <div class="nav-right">
+    <button class="lang-btn">EN</button>
+    <button class="lang-btn">RU</button>
+    <button class="lang-btn">KZ</button>
+
+    <button class="auth-btn">Login</button>
+  </div>
+</nav>
+
+<section class="movie-hero" *ngIf="movie">
+  <div class="movie-poster">
+    <img [src]="movie.poster" [alt]="movie.title">
+  </div>
+
+  <div class="movie-info">
+    <h1>{{ movie.title }}</h1>
+
+    <div class="movie-meta">
+      <span>{{ movie.genre }}</span>
+      <span>{{ movie.year }}</span>
+      <span class="rating">⭐ {{ movie.rating }}</span>
+    </div>
+
+    <p class="movie-description">
+      {{ movie.description }}
+    </p>
+
+    <div class="movie-actions">
+      <button
+        class="primary-btn"
+        (click)="addToWatchlist()"
+      >
+        Add to Watchlist
+      </button>
+      <button class="secondary-btn">Watch Trailer</button>
+    </div>
+  </div>
+</section>
+
+<section class="movie-hero" *ngIf="!movie">
+  <div class="movie-info">
+    <h1>Movie not found</h1>
+    <p class="movie-description">
+      We could not find this movie.
+    </p>
+  </div>
+</section>
+
+<section class="trailer-section">
+  <h2>Trailer</h2>
+
+  <div class="trailer-box">
+    Trailer will appear here later
+  </div>
+</section>
+
+<section class="reviews-section">
+
+  <h2>Reviews</h2>
+
+  <div class="review-card" *ngFor="let review of reviews">
+    <div class="review-header">
+      <span class="username">{{ review.user }}</span>
+      <span class="rating">⭐ {{ review.rating }}</span>
+    </div>
+    <p>{{ review.comment }}</p>
+  </div>
+
+</section>
+
+<section class="add-review">
+
+  <h2>Add Review</h2>
+
+  <div class="review-form">
+
+    <input
+      type="number"
+      placeholder="Rating (1-10)"
+      [(ngModel)]="newRating"
+    >
+
+    <textarea
+      placeholder="Write your review"
+      [(ngModel)]="newComment"
+    ></textarea>
+
+    <button
+      class="primary-btn"
+      (click)="submitReview()"
+    >
+      Submit Review
+    </button>
+
+  </div>
+
+</section>
+
+<section class="similar-movies">
+
+  <h2>Similar Movies</h2>
+
+  <div class="movie-grid">
+
+    <div class="movie-card">
+      <img src="https://via.placeholder.com/250x350">
+      <h4>Inception</h4>
+    </div>
+
+    <div class="movie-card">
+      <img src="https://via.placeholder.com/250x350">
+      <h4>Arrival</h4>
+    </div>
+
+    <div class="movie-card">
+      <img src="https://via.placeholder.com/250x350">
+      <h4>The Martian</h4>
+    </div>
+
+  </div>
+
+</section>
