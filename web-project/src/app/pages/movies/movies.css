@@ -451,3 +451,20 @@
     radial-gradient(circle at top right, rgba(40, 70, 160, 0.28), transparent 28%),
     linear-gradient(180deg, #0b0b14 0%, #11111d 45%, #09090f 100%);
 }
+.search-title {
+  margin: 0 0 24px;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.search-subtitle {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #aeb6c8;
+  text-align: center;
+}
+.lang-active {
+  background: rgba(127, 86, 255, 0.4);
+  color: #ffffff;
+}

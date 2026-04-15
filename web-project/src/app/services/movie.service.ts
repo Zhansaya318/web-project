@@ -10,6 +10,8 @@ export class MovieService {
     {
       id: 1,
       title: 'Interstellar',
+      titleRu: 'Интерстеллар',
+      titleKz: 'Интерстеллар',
       genres: ['Sci-Fi', 'Drama', 'Adventure'],
       year: 2014,
       description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
@@ -19,6 +21,8 @@ export class MovieService {
     {
       id: 2,
       title: 'Inception',
+      titleRu: 'Начало',
+      titleKz: 'Бастау',
       genres: ['Sci-Fi', 'Thriller', 'Action'],
       year: 2010,
       description: 'A thief who steals corporate secrets through dream-sharing technology is given the task of planting an idea.',
@@ -28,6 +32,8 @@ export class MovieService {
     {
       id: 3,
       title: 'Arrival',
+      titleRu: 'Прибытие',
+      titleKz: 'Келу',
       genres: ['Sci-Fi', 'Drama', 'Mystery'],
       year: 2016,
       description: 'A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.',
@@ -37,6 +43,8 @@ export class MovieService {
     {
       id: 4,
       title: 'The Dark Knight',
+      titleRu: 'Тёмный рыцарь',
+      titleKz: 'Қараңғы рыцарь',
       genres: ['Action', 'Crime', 'Drama'],
       year: 2008,
       description: 'Batman faces the Joker, a criminal mastermind who plunges Gotham City into anarchy.',
@@ -46,6 +54,8 @@ export class MovieService {
     {
       id: 5,
       title: 'Titanic',
+      titleRu: 'Титаник',
+      titleKz: 'Титаник',
       genres: ['Drama', 'Romance'],
       year: 1997,
       description: 'A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.',
@@ -55,6 +65,8 @@ export class MovieService {
     {
       id: 6,
       title: 'The Shawshank Redemption',
+      titleRu: 'Побег из Шоушенка',
+      titleKz: 'Шоушенктен қашу',
       genres: ['Drama', 'Crime'],
       year: 1994,
       description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
@@ -64,6 +76,8 @@ export class MovieService {
     {
       id: 7,
       title: 'The Godfather',
+      titleRu: 'Крёстный отец',
+      titleKz: 'Құдайата',
       genres: ['Crime', 'Drama'],
       year: 1972,
       description: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
@@ -73,6 +87,8 @@ export class MovieService {
     {
       id: 8,
       title: 'Pulp Fiction',
+      titleRu: 'Криминальное чтиво',
+      titleKz: 'Қылмыстық оқу',
       genres: ['Crime', 'Drama', 'Thriller'],
       year: 1994,
       description: 'The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.',
@@ -82,6 +98,8 @@ export class MovieService {
     {
       id: 9,
       title: 'The Matrix',
+      titleRu: 'Матрица',
+      titleKz: 'Матрица',
       genres: ['Sci-Fi', 'Action', 'Thriller'],
       year: 1999,
       description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
@@ -91,6 +109,8 @@ export class MovieService {
     {
       id: 10,
       title: 'Forrest Gump',
+      titleRu: 'Форрест Гамп',
+      titleKz: 'Форрест Гамп',
       genres: ['Drama', 'Romance', 'Comedy'],
       year: 1994,
       description: 'The presidencies of Kennedy and Johnson, Vietnam, Watergate, and other history unfold through the perspective of an Alabama man.',
@@ -100,6 +120,8 @@ export class MovieService {
     {
       id: 11,
       title: 'Goodfellas',
+      titleRu: 'Славные парни',
+      titleKz: 'Жақсы жігіттер',
       genres: ['Crime', 'Drama'],
       year: 1990,
       description: 'The story of Henry Hill and his life in the mob, covering his introduction into the mafia life at an early age.',
@@ -109,6 +131,8 @@ export class MovieService {
     {
       id: 12,
       title: 'Fight Club',
+      titleRu: 'Бойцовский клуб',
+      titleKz: 'Жекпе-жек клубы',
       genres: ['Drama', 'Thriller'],
       year: 1999,
       description: 'An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much more.',
@@ -118,6 +142,8 @@ export class MovieService {
     {
       id: 13,
       title: 'Parasite',
+      titleRu: 'Паразиты',
+      titleKz: 'Паразиттер',
       genres: ['Drama', 'Thriller', 'Comedy'],
       year: 2019,
       description: 'Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.',
@@ -127,6 +153,8 @@ export class MovieService {
     {
       id: 14,
       title: 'Joker',
+      titleRu: 'Джокер',
+      titleKz: 'Джокер',
       genres: ['Crime', 'Drama', 'Thriller'],
       year: 2019,
       description: 'A mentally troubled stand-up comedian embarks on a downward spiral that leads to the creation of an iconic villain.',
@@ -136,6 +164,8 @@ export class MovieService {
     {
       id: 15,
       title: 'Oppenheimer',
+      titleRu: 'Оппенгеймер',
+      titleKz: 'Оппенгеймер',
       genres: ['Drama', 'Mystery', 'Thriller'],
       year: 2023,
       description: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.',
