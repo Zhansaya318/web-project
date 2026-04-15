@@ -8,4 +8,5 @@ export interface Movie {
   description: string;
   rating: number;
   poster: string;
+  trailerId: string;
 }

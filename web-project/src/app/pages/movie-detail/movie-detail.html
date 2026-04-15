@@ -1,132 +1,220 @@
 <nav class="navbar">
-
   <div class="nav-left">
     <a class="nav-link" routerLink="/">Movies</a>
     <a class="nav-link" routerLink="/watchlist">Watchlist</a>
   </div>
-
   <div class="nav-right">
-
     <button class="lang-btn">EN</button>
     <button class="lang-btn">RU</button>
     <button class="lang-btn">KZ</button>
-
-    <button class="auth-btn" routerLink="/login">Login</button>
-
+    <button class="auth-btn" *ngIf="!isLoggedIn()" routerLink="/login">Login</button>
+    <button class="auth-btn" *ngIf="isLoggedIn()" (click)="logout()">Logout</button>
   </div>
-
 </nav>
 
+<!-- Movie found -->
 <section class="movie-hero" *ngIf="movie">
   <div class="movie-poster">
     <img [src]="movie.poster" [alt]="movie.title">
   </div>
 
-  <div class="movie-info">
-    <h1>{{ movie.title }}</h1>
-
-    <div class="movie-meta">
-      <span>{{ movie.genres.join(', ') }}</span>
-      <span>{{ movie.year }}</span>
-      <span class="rating">⭐ {{ movie.rating }}</span>
+  <div class="movie-info-col">
+    <!-- Movie info -->
+    <div class="movie-info">
+      <h1>{{ movie.title }}</h1>
+      <div class="movie-meta">
+        <span *ngFor="let genre of movie.genres">{{ genre }}</span>
+        <span>{{ movie.year }}</span>
+        <span class="rating">⭐ {{ movie.rating }}</span>
+      </div>
+      <p class="movie-description">{{ movie.description }}</p>
+      <div class="movie-actions">
+        <button class="primary-btn" *ngIf="getMovieStatus() === 'none'" (click)="addToWatchlist()">
+          + Add to Watchlist
+        </button>
+        <div class="watchlist-dropdown" *ngIf="getMovieStatus() !== 'none'">
+          <button class="primary-btn" (click)="toggleWatchlistMenu()">
+            {{ getMovieStatus() === 'watchlist' ? '✓ In Watchlist' : '✓ Watched' }} ▾
+          </button>
+          <div class="watchlist-menu" *ngIf="showWatchlistMenu">
+            <button (click)="addToWatchlist()">In Watchlist</button>
+            <button (click)="markAsWatched()">Watched</button>
+            <button (click)="removeFromWatchlist()">Remove from list</button>
+          </div>
+        </div>
+        <button class="secondary-btn" (click)="scrollToTrailer()">▶ Watch Trailer</button>
+      </div>
     </div>
 
-    <p class="movie-description">
-      {{ movie.description }}
-    </p>
+    <!-- Add Review / Your Review — под movie-info, не выходит за постер -->
+    <div class="inline-review">
 
-    <div class="movie-actions">
-      <button
-        class="primary-btn"
-        (click)="addToWatchlist()"
-      >
-        Add to Watchlist
-      </button>
-      <button class="secondary-btn">Watch Trailer</button>
+      <ng-container *ngIf="!hasReviewed">
+        <h3>Add Review</h3>
+        <div class="review-form-inline">
+          <div class="star-rating">
+            <span
+              *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]"
+              class="star"
+              [class.active]="star <= newRating"
+              (click)="setRating(star)"
+            >★</span>
+            <span class="rating-value" *ngIf="newRating > 0">{{ newRating }}/10</span>
+          </div>
+          <textarea placeholder="Write your review..." [(ngModel)]="newComment" rows="3"></textarea>
+          <button class="primary-btn small-btn" (click)="submitReview()">Submit Review</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="hasReviewed && myReview">
+        <h3>Your Review</h3>
+        <div class="your-review-card">
+          <div class="your-review-header">
+            <div class="comment-user-info">
+              <div class="comment-avatar">{{ myReview.user[0].toUpperCase() }}</div>
+              <span class="username">{{ myReview.user }}</span>
+            </div>
+            <span class="rating">⭐ {{ myReview.rating }}/10</span>
+          </div>
+          <p class="your-review-text">{{ myReview.comment }}</p>
+          <button class="delete-review-btn" (click)="openDeleteModal()">
+            🗑 Delete my review
+          </button>
+        </div>
+      </ng-container>
+
     </div>
   </div>
 </section>
 
+<!-- Movie not found -->
 <section class="movie-hero" *ngIf="!movie">
   <div class="movie-info">
     <h1>Movie not found</h1>
-    <p class="movie-description">
-      We could not find this movie.
-    </p>
+    <p class="movie-description">We could not find this movie.</p>
   </div>
 </section>
 
-<section class="trailer-section">
+<!-- Trailer -->
+<section class="trailer-section" #trailerSection>
   <h2>Trailer</h2>
-
-  <div class="trailer-box">
-    Trailer will appear here later
+  <div class="trailer-box" *ngIf="movie">
+    <iframe [src]="cachedTrailerUrl" width="100%" height="100%" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
   </div>
 </section>
 
+<!-- Reviews full width -->
 <section class="reviews-section">
-
-  <h2>Reviews</h2>
-
-  <div class="review-card" *ngFor="let review of reviews">
-    <div class="review-header">
-      <span class="username">{{ review.user }}</span>
-      <span class="rating">⭐ {{ review.rating }}</span>
-    </div>
-    <p>{{ review.comment }}</p>
-  </div>
-
-</section>
-
-<section class="add-review">
-
-  <h2>Add Review</h2>
-
-  <div class="review-form">
-
-    <input
-      type="number"
-      placeholder="Rating (1-10)"
-      [(ngModel)]="newRating"
-    >
-
-    <textarea
-      placeholder="Write your review"
-      [(ngModel)]="newComment"
-    ></textarea>
-
-    <button
-      class="primary-btn"
-      (click)="submitReview()"
-    >
-      Submit Review
+  <div class="reviews-header">
+    <h2>Reviews <span class="reviews-count">({{ reviews.length }})</span></h2>
+    <button class="view-all-btn" *ngIf="reviews.length > 3" (click)="toggleViewAll()">
+      {{ showAllReviews ? 'Show less' : 'View all' }}
     </button>
+  </div>
 
+  <div *ngIf="reviews.length === 0" class="empty-state">
+    <p>No reviews yet. Be the first!</p>
+  </div>
+
+  <div class="reviews-scroll" [class.expanded]="showAllReviews">
+    <div class="review-card" *ngFor="let review of displayedReviews">
+      <div class="review-header">
+        <div class="comment-user-info">
+          <div class="comment-avatar">{{ review.user[0].toUpperCase() }}</div>
+          <span class="username">{{ review.user }}</span>
+        </div>
+        <span class="rating">⭐ {{ review.rating }}/10</span>
+      </div>
+      <p>{{ review.comment }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Discussion -->
+<section class="two-col-section">
+
+  <div class="left-col">
+    <h2>Discussion <span class="reviews-count">({{ comments.length }})</span></h2>
+
+    <div *ngIf="comments.length === 0" class="empty-state">
+      <p>No comments yet. Start the discussion!</p>
+    </div>
+
+    <div class="comments-scroll">
+      <div class="comment-card" *ngFor="let comment of comments">
+        <div class="reply-indicator" *ngIf="comment.replyTo">
+          ↩ Replying to <strong>{{ comment.replyTo }}</strong>
+        </div>
+        <div class="comment-header">
+          <div class="comment-user-info">
+            <div class="comment-avatar">{{ comment.user[0].toUpperCase() }}</div>
+            <div>
+              <span class="username">{{ comment.user }}</span>
+              <span class="comment-date">{{ comment.date }}</span>
+            </div>
+          </div>
+          <div class="comment-menu-wrap">
+            <button class="dots-btn" (click)="toggleCommentMenu(comment.id)">
+              <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor">
+                <circle cx="2" cy="2" r="1.5"/>
+                <circle cx="8" cy="2" r="1.5"/>
+                <circle cx="14" cy="2" r="1.5"/>
+              </svg>
+            </button>
+            <div class="comment-dropdown" *ngIf="openMenuCommentId === comment.id">
+              <button (click)="setReplyTo(comment); toggleCommentMenu(comment.id)">Reply</button>
+              <button *ngIf="canDeleteComment(comment)" (click)="deleteComment(comment.id)">Remove</button>
+            </div>
+          </div>
+        </div>
+        <p class="comment-text">{{ comment.text }}</p>
+        <button class="reply-btn" (click)="setReplyTo(comment)">↩ Reply</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <h2>Post a Comment</h2>
+    <div class="comment-form">
+      <div class="reply-to-banner" *ngIf="replyingTo">
+        Replying to <strong>{{ replyingTo.user }}</strong>
+        <button class="cancel-reply-btn" (click)="cancelReply()">✕</button>
+      </div>
+      <textarea
+        placeholder="Share your thoughts about this movie..."
+        [(ngModel)]="newCommentText"
+        rows="6"
+      ></textarea>
+      <button class="primary-btn" (click)="submitComment()">Post Comment</button>
+    </div>
   </div>
 
 </section>
 
+<!-- Similar Movies -->
 <section class="similar-movies">
-
   <h2>Similar Movies</h2>
-
   <div class="movie-grid">
-
-    <div class="movie-card">
-      <img src="https://via.placeholder.com/250x350">
-      <h4>Inception</h4>
+    <div class="movie-card" *ngFor="let m of similarMovies"
+      [routerLink]="['/movie', m.id]"
+      (click)="navigateToMovie(m.id)">
+      <img [src]="m.poster" [alt]="m.title">
+      <h4>{{ m.title }}</h4>
     </div>
-
-    <div class="movie-card">
-      <img src="https://via.placeholder.com/250x350">
-      <h4>Arrival</h4>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://via.placeholder.com/250x350">
-      <h4>The Martian</h4>
-    </div>
-
   </div>
-
 </section>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeDeleteModal()">✕</button>
+    <div class="modal-icon">🗑</div>
+    <p class="modal-text">Are you sure you want to delete your review?</p>
+    <div class="modal-actions">
+      <button class="modal-cancel-btn" (click)="closeDeleteModal()">No, cancel</button>
+      <button class="modal-confirm-btn" (click)="confirmDeleteReview()">Yes, delete</button>
+    </div>
+  </div>
+</div>

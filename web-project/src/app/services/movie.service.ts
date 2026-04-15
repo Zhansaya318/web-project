@@ -16,7 +16,8 @@ export class MovieService {
       year: 2014,
       description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
       rating: 9.2,
-      poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
+      trailerId: 'zSWdZVtXT7E'
     },
     {
       id: 2,
@@ -27,7 +28,8 @@ export class MovieService {
       year: 2010,
       description: 'A thief who steals corporate secrets through dream-sharing technology is given the task of planting an idea.',
       rating: 9.1,
-      poster: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg',
+      trailerId: 'YoHD9XEInc0'
     },
     {
       id: 3,
@@ -38,7 +40,8 @@ export class MovieService {
       year: 2016,
       description: 'A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.',
       rating: 8.1,
-      poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg',
+      trailerId: 'tFMo3UJ4B4g'
     },
     {
       id: 4,
@@ -49,7 +52,8 @@ export class MovieService {
       year: 2008,
       description: 'Batman faces the Joker, a criminal mastermind who plunges Gotham City into anarchy.',
       rating: 9.3,
-      poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+      trailerId: 'EXeTwQWrcwY'
     },
     {
       id: 5,
@@ -60,7 +64,8 @@ export class MovieService {
       year: 1997,
       description: 'A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.',
       rating: 7.9,
-      poster: 'https://image.tmdb.org/t/p/w500/kHXEpyfl6zqn8a6YuozZUujufXf.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/kHXEpyfl6zqn8a6YuozZUujufXf.jpg',
+      trailerId: 'CHekZpCCExA'
     },
     {
       id: 6,
@@ -71,7 +76,8 @@ export class MovieService {
       year: 1994,
       description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
       rating: 9.3,
-      poster: 'https://image.tmdb.org/t/p/w500/lyQBXzOQSuE59IsHyhrp0qIiPAz.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/lyQBXzOQSuE59IsHyhrp0qIiPAz.jpg',
+      trailerId: '6hB3S9bIaco'
     },
     {
       id: 7,
@@ -82,7 +88,8 @@ export class MovieService {
       year: 1972,
       description: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
       rating: 9.2,
-      poster: 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsLegHnDmni7.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsLegHnDmni7.jpg',
+      trailerId: 'sY1S34973zA'
     },
     {
       id: 8,
@@ -93,7 +100,8 @@ export class MovieService {
       year: 1994,
       description: 'The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.',
       rating: 8.9,
-      poster: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
+      trailerId: 's7EdQ4FqbhY'
     },
     {
       id: 9,
@@ -104,7 +112,8 @@ export class MovieService {
       year: 1999,
       description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
       rating: 8.7,
-      poster: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
+      trailerId: 'vKQi3bBA1y8'
     },
     {
       id: 10,
@@ -115,7 +124,8 @@ export class MovieService {
       year: 1994,
       description: 'The presidencies of Kennedy and Johnson, Vietnam, Watergate, and other history unfold through the perspective of an Alabama man.',
       rating: 8.8,
-      poster: 'https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg',
+      trailerId: 'bLvqoHBptjg'
     },
     {
       id: 11,
@@ -126,7 +136,8 @@ export class MovieService {
       year: 1990,
       description: 'The story of Henry Hill and his life in the mob, covering his introduction into the mafia life at an early age.',
       rating: 8.7,
-      poster: 'https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg',
+      trailerId: '2IL6-sQSPAo'
     },
     {
       id: 12,
@@ -137,7 +148,8 @@ export class MovieService {
       year: 1999,
       description: 'An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much more.',
       rating: 8.8,
-      poster: 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',
+      trailerId: 'SUXWAEX2jlg'
     },
     {
       id: 13,
@@ -148,7 +160,8 @@ export class MovieService {
       year: 2019,
       description: 'Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.',
       rating: 8.5,
-      poster: 'https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg',
+      trailerId: '5xH0HfJHsaY'
     },
     {
       id: 14,
@@ -159,7 +172,8 @@ export class MovieService {
       year: 2019,
       description: 'A mentally troubled stand-up comedian embarks on a downward spiral that leads to the creation of an iconic villain.',
       rating: 8.4,
-      poster: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg',
+      trailerId: 'zAGVQLHvwOY'
     },
     {
       id: 15,
@@ -170,7 +184,8 @@ export class MovieService {
       year: 2023,
       description: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.',
       rating: 8.9,
-      poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg'
+      poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',
+      trailerId: 'uYPbbksJxIg'
     }
   ];
 

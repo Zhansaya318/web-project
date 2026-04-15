@@ -36,4 +36,7 @@ export class ReviewService {
   addReview(review: Review): void {
     this.reviews.push(review);
   }
+  deleteReview(reviewId: number): void {
+  this.reviews = this.reviews.filter(r => r.id !== reviewId);
+}
 }

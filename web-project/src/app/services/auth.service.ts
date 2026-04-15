@@ -13,6 +13,7 @@ export class AuthService {
 
   private tokenKey = 'auth_token';
   private usersKey = 'users';
+  private currentUserKey = 'current_user';
 
   getUsers(): User[] {
     const users = localStorage.getItem(this.usersKey);
@@ -53,11 +54,13 @@ export class AuthService {
     }
 
     localStorage.setItem(this.tokenKey, 'fake-jwt-token');
+    localStorage.setItem(this.currentUserKey, user.username); // сохраняем username
     return true;
   }
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.currentUserKey);
   }
 
   isLoggedIn(): boolean {
@@ -66,5 +69,9 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
+  }
+
+  getCurrentUser(): string | null {
+    return localStorage.getItem(this.currentUserKey);
   }
 }
