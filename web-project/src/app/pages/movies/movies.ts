@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './movies.css',
 })
 export class Movies {
+  openMenuMovieId: number | null = null;
+
   movies: Movie[] = [];
   filteredMovies: Movie[] = [];
   recommendedMovies: Movie[] = [];
@@ -51,10 +53,6 @@ export class Movies {
     this.recommendedMovies = this.movies.filter(movie => movie.rating > 9);
 
     this.resetFilters();
-  }
-
-  addToWatchlist(movieId: number): void {
-    this.watchlistService.addToWatchlist(movieId);
   }
 
   isLoggedIn(): boolean {
@@ -106,7 +104,7 @@ export class Movies {
 
       const matchesGenres =
         this.selectedGenres.length === 0 ||
-        this.selectedGenres.some(genre => movie.genres.includes(genre));
+        this.selectedGenres.every(genre => movie.genres.includes(genre));
 
       const matchesRating =
         movie.rating >= this.selectedMinRating;
@@ -135,5 +133,32 @@ export class Movies {
 
   getRatingLabel(value: number): string {
     return value === 10 ? '10' : `${value}+`;
+  }
+
+  getMovieStatus(movieId: number): 'none' | 'watchlist' | 'watched' {
+    return this.watchlistService.getStatus(movieId);
+  }
+
+  toggleMovieMenu(movieId: number): void {
+    if (this.openMenuMovieId === movieId) {
+      this.openMenuMovieId = null;
+    } else {
+      this.openMenuMovieId = movieId;
+    }
+  }
+
+  setWatchlist(movieId: number): void {
+    this.watchlistService.addToWatchlist(movieId);
+    this.openMenuMovieId = null;
+  }
+
+  setWatched(movieId: number): void {
+    this.watchlistService.markAsWatched(movieId);
+    this.openMenuMovieId = null;
+  }
+
+  removeFromList(movieId: number): void {
+    this.watchlistService.removeFromWatchlist(movieId);
+    this.openMenuMovieId = null;
   }
 }

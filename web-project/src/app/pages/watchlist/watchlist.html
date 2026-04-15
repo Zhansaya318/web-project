@@ -38,7 +38,7 @@
       <img [src]="movie.poster" [alt]="movie.title" />
       <div class="movie-info">
         <h3>{{ movie.title }}</h3>
-        <p>{{ movie.genre }} • {{ movie.year }}</p>
+        <p>{{ movie.genres.join(', ') }} • {{ movie.year }}</p>
         <span class="rating">⭐ {{ movie.rating }}</span>
 
         <div class="movie-actions">

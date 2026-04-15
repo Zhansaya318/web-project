@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="nav-left">
-    <a class="nav-link" routerLink="/">Movies</a>
+    <a class="nav-link" routerLink="/" (click)="resetFilters()">Movies</a>
     <a class="nav-link" routerLink="/watchlist">Watchlist</a>
   </div>
 
@@ -128,9 +128,38 @@
           <button class="primary-btn small-btn" [routerLink]="['/movie', movie.id]">
             Open
           </button>
-          <button class="secondary-btn small-btn" (click)="addToWatchlist(movie.id)">
-            Watchlist
-          </button>
+
+          <div class="watchlist-dropdown">
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'none'"
+              (click)="setWatchlist(movie.id)"
+            >
+              Add to Watchlist
+            </button>
+
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'watchlist'"
+              (click)="toggleMovieMenu(movie.id)"
+            >
+              In Watchlist
+            </button>
+
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'watched'"
+              (click)="toggleMovieMenu(movie.id)"
+            >
+              Watched
+            </button>
+
+            <div class="watchlist-menu" *ngIf="openMenuMovieId === movie.id">
+              <button (click)="setWatchlist(movie.id)">In Watchlist</button>
+              <button (click)="setWatched(movie.id)">Watched</button>
+              <button (click)="removeFromList(movie.id)">Remove from list</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -155,9 +184,38 @@
           <button class="primary-btn small-btn" [routerLink]="['/movie', movie.id]">
             Open
           </button>
-          <button class="secondary-btn small-btn" (click)="addToWatchlist(movie.id)">
-            Watchlist
-          </button>
+
+          <div class="watchlist-dropdown">
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'none'"
+              (click)="setWatchlist(movie.id)"
+            >
+              Add to Watchlist
+            </button>
+
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'watchlist'"
+              (click)="toggleMovieMenu(movie.id)"
+            >
+              In Watchlist
+            </button>
+
+            <button
+              class="secondary-btn small-btn"
+              *ngIf="getMovieStatus(movie.id) === 'watched'"
+              (click)="toggleMovieMenu(movie.id)"
+            >
+              Watched
+            </button>
+
+            <div class="watchlist-menu" *ngIf="openMenuMovieId === movie.id">
+              <button (click)="setWatchlist(movie.id)">In Watchlist</button>
+              <button (click)="setWatched(movie.id)">Watched</button>
+              <button (click)="removeFromList(movie.id)">Remove from list</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
