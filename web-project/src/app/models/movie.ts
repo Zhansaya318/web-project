@@ -6,6 +6,8 @@ export interface Movie {
   genres: string[];
   year: number;
   description: string;
+  descriptionRu: string;
+  descriptionKz: string;
   rating: number;
   poster: string;
   trailerId: string;

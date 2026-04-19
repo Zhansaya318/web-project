@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { MovieService } from '../../services/movie.service';
 import { ReviewService } from '../../services/review.service';
 import { WatchlistService } from '../../services/watchlist.service';
 import { AuthService } from '../../services/auth.service';
+import { LanguageService, Lang } from '../../services/language.service';
 
 export interface Comment {
   id: number;
@@ -20,6 +21,87 @@ export interface Comment {
   date: string;
   replyTo?: string;
 }
+
+const GENRE_TRANSLATIONS: Record<Lang, Record<string, string>> = {
+  EN: {
+    Action: 'Action', Adventure: 'Adventure', Comedy: 'Comedy', Crime: 'Crime',
+    Drama: 'Drama', Mystery: 'Mystery', Romance: 'Romance', 'Sci-Fi': 'Sci-Fi', Thriller: 'Thriller'
+  },
+  RU: {
+    Action: 'Боевик', Adventure: 'Приключения', Comedy: 'Комедия', Crime: 'Криминал',
+    Drama: 'Драма', Mystery: 'Мистика', Romance: 'Романтика', 'Sci-Fi': 'Фантастика', Thriller: 'Триллер'
+  },
+  KZ: {
+    Action: 'Боевик', Adventure: 'Приключение', Comedy: 'Комедия', Crime: 'Қылмыс',
+    Drama: 'Драма', Mystery: 'Жұмбақ', Romance: 'Романтика', 'Sci-Fi': 'Фантастика', Thriller: 'Триллер'
+  }
+};
+
+const TRANSLATIONS: Record<Lang, Record<string, string>> = {
+  EN: {
+    movies: 'Movies', watchlist: 'Watchlist', account: 'Account', history: 'History', logout: 'Logout',
+    addToWatchlist: '+ Add to Watchlist', inWatchlist: 'In Watchlist', watched: 'Watched',
+    watchTrailer: '▶ Watch Trailer', addReview: 'Add Review', yourReview: 'Your Review',
+    submitReview: 'Submit Review', deleteReview: '🗑 Delete my review',
+    trailer: 'Trailer', reviews: 'Reviews', noReviews: 'No reviews yet. Be the first!',
+    viewAll: 'View all', showLess: 'Show less', discussion: 'Discussion',
+    noComments: 'No comments yet. Start the discussion!', postComment: 'Post a Comment',
+    shareThoughts: 'Share your thoughts about this movie...', post: 'Post Comment',
+    replyingTo: 'Replying to', similarMovies: 'Similar Movies',
+    edit: 'Edit', remove: 'Remove', reply: 'Reply', report: 'Report',
+    save: 'Save', cancel: 'Cancel', movieNotFound: 'Movie not found',
+    removeFromList: 'Remove from list',
+    deleteConfirm: 'Are you sure you want to delete your review?',
+    noCancel: 'No, cancel', yesDelete: 'Yes, delete',
+    reportWhy: 'Why are you reporting this comment?',
+    harassment: 'Harassment or hate speech', spam: 'Spam',
+    misinformation: 'Fake information', other: 'Other',
+    reportSuccess: 'Report submitted. Thank you for keeping the community safe!',
+    close: 'Close',
+  },
+  RU: {
+    movies: 'Фильмы', watchlist: 'Список', account: 'Аккаунт', history: 'История', logout: 'Выйти',
+    addToWatchlist: '+ В список', inWatchlist: 'В списке', watched: 'Просмотрено',
+    watchTrailer: '▶ Смотреть трейлер', addReview: 'Добавить отзыв', yourReview: 'Ваш отзыв',
+    submitReview: 'Отправить', deleteReview: '🗑 Удалить отзыв',
+    trailer: 'Трейлер', reviews: 'Отзывы', noReviews: 'Нет отзывов. Будьте первым!',
+    viewAll: 'Показать все', showLess: 'Скрыть', discussion: 'Обсуждение',
+    noComments: 'Нет комментариев. Начните обсуждение!', postComment: 'Оставить комментарий',
+    shareThoughts: 'Поделитесь мнением о фильме...', post: 'Отправить',
+    replyingTo: 'Ответ для', similarMovies: 'Похожие фильмы',
+    edit: 'Редактировать', remove: 'Удалить', reply: 'Ответить', report: 'Пожаловаться',
+    save: 'Сохранить', cancel: 'Отмена', movieNotFound: 'Фильм не найден',
+    removeFromList: 'Убрать из списка',
+    deleteConfirm: 'Вы уверены, что хотите удалить отзыв?',
+    noCancel: 'Нет, отмена', yesDelete: 'Да, удалить',
+    reportWhy: 'Почему вы жалуетесь на этот комментарий?',
+    harassment: 'Оскорбление или язык ненависти', spam: 'Спам',
+    misinformation: 'Ложная информация', other: 'Другое',
+    reportSuccess: 'Жалоба отправлена. Спасибо за помощь!',
+    close: 'Закрыть',
+  },
+  KZ: {
+    movies: 'Фильмдер', watchlist: 'Тізім', account: 'Аккаунт', history: 'Тарих', logout: 'Шығу',
+    addToWatchlist: '+ Тізімге қосу', inWatchlist: 'Тізімде', watched: 'Көрілді',
+    watchTrailer: '▶ Трейлер көру', addReview: 'Пікір қалдыру', yourReview: 'Сіздің пікіріңіз',
+    submitReview: 'Жіберу', deleteReview: '🗑 Пікірді жою',
+    trailer: 'Трейлер', reviews: 'Пікірлер', noReviews: 'Пікір жоқ. Бірінші болыңыз!',
+    viewAll: 'Барлығын көру', showLess: 'Жасыру', discussion: 'Талқылау',
+    noComments: 'Комментарий жоқ. Талқылауды бастаңыз!', postComment: 'Комментарий қалдыру',
+    shareThoughts: 'Фильм туралы пікіріңізді бөлісіңіз...', post: 'Жіберу',
+    replyingTo: 'Жауап:', similarMovies: 'Ұқсас фильмдер',
+    edit: 'Өңдеу', remove: 'Жою', reply: 'Жауап', report: 'Шағым',
+    save: 'Сақтау', cancel: 'Болдырмау', movieNotFound: 'Фильм табылмады',
+    removeFromList: 'Тізімнен алу',
+    deleteConfirm: 'Пікіріңізді жойғыңыз келе ме?',
+    noCancel: 'Жоқ, болдырмау', yesDelete: 'Иә, жою',
+    reportWhy: 'Неліктен шағым жасайсыз?',
+    harassment: 'Қорлау немесе жек көрушілік', spam: 'Спам',
+    misinformation: 'Жалған ақпарат', other: 'Басқа',
+    reportSuccess: 'Шағым жіберілді. Рахмет!',
+    close: 'Жабу',
+  }
+};
 
 @Component({
   selector: 'app-movie-detail',
@@ -44,10 +126,25 @@ export class MovieDetail implements OnInit {
   showAllReviews = false;
   replyingTo: Comment | null = null;
   openMenuCommentId: number | null = null;
-
-  // Delete modal
   showDeleteModal = false;
+  showAccountMenu = false;
 
+  editingCommentId: number | null = null;
+  editingText: string = '';
+
+  showReportModal = false;
+  reportingCommentId: number | null = null;
+  selectedReason: string = '';
+  reportSent = false;
+
+  reportReasons = [
+    { key: 'harassment' },
+    { key: 'spam' },
+    { key: 'misinformation' },
+    { key: 'other' },
+  ];
+
+  langs: Lang[] = ['EN', 'RU', 'KZ'];
   cachedTrailerUrl: SafeResourceUrl = '';
   private reviewsStorageKey = '';
 
@@ -58,17 +155,79 @@ export class MovieDetail implements OnInit {
     private reviewService: ReviewService,
     private watchlistService: WatchlistService,
     private authService: AuthService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public langService: LanguageService
   ) {}
+
+  get currentLang(): Lang { return this.langService.getLang(); }
+
+  t(key: string): string {
+    return TRANSLATIONS[this.currentLang][key] || key;
+  }
+
+  setLang(lang: Lang): void { this.langService.setLang(lang); }
+
+  // Movie title/description/genre translation
+  getMovieTitle(): string {
+    if (!this.movie) return '';
+    if (this.currentLang === 'RU') return this.movie.titleRu || this.movie.title;
+    if (this.currentLang === 'KZ') return this.movie.titleKz || this.movie.title;
+    return this.movie.title;
+  }
+
+  getMovieDescription(): string {
+    if (!this.movie) return '';
+    if (this.currentLang === 'RU') return (this.movie as any).descriptionRu || this.movie.description;
+    if (this.currentLang === 'KZ') return (this.movie as any).descriptionKz || this.movie.description;
+    return this.movie.description;
+  }
+
+  tGenre(genre: string): string {
+    return GENRE_TRANSLATIONS[this.currentLang][genre] || genre;
+  }
+
+  getSimilarMovieTitle(m: Movie): string {
+    if (this.currentLang === 'RU') return m.titleRu || m.title;
+    if (this.currentLang === 'KZ') return m.titleKz || m.title;
+    return m.title;
+  }
+
+  // Account dropdown
+  toggleAccountMenu(): void { this.showAccountMenu = !this.showAccountMenu; }
+  closeAccountMenu(): void { this.showAccountMenu = false; }
+
+  getAvatarLetter(): string {
+    const user = this.authService.getCurrentUser();
+    return user ? user[0].toUpperCase() : '?';
+  }
+
+  getAvatarUrl(): string {
+    const user = this.authService.getCurrentUser();
+    return user ? localStorage.getItem(`avatar_${user}`) || '' : '';
+  }
+
+  getCurrentUsername(): string {
+    return this.authService.getCurrentUser() || '';
+  }
+
+  getUserAvatar(username: string): string {
+    return localStorage.getItem(`avatar_${username}`) || '';
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.account-dropdown-wrap')) {
+      this.showAccountMenu = false;
+    }
+  }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.movie = this.movieService.getMovieById(id);
     this.reviewsStorageKey = `reviews_${id}`;
-
     this.loadReviews(id);
     this.loadComments(id);
-
     if (this.movie) {
       this.cachedTrailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         `https://www.youtube.com/embed/${this.movie.trailerId}`
@@ -76,20 +235,28 @@ export class MovieDetail implements OnInit {
       this.similarMovies = this.movieService.getMovies()
         .filter(m => m.id !== id && m.genres.some(g => this.movie!.genres.includes(g)))
         .slice(0, 3);
-    }
 
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        const key = `history_${user}`;
+        const raw = localStorage.getItem(key);
+        const items = raw ? JSON.parse(raw) : [];
+        items.push({
+          movieId: this.movie.id,
+          visitedAt: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+        });
+        localStorage.setItem(key, JSON.stringify(items));
+      }
+    }
     window.scrollTo({ top: 0 });
   }
 
-  // Reviews
   loadReviews(movieId: number): void {
     const raw = localStorage.getItem(`reviews_${movieId}`);
     const saved: Review[] = raw ? JSON.parse(raw) : [];
     const fromService = this.reviewService.getReviewsByMovieId(movieId);
     const merged = [...fromService];
-    saved.forEach(s => {
-      if (!merged.find(r => r.id === s.id)) merged.push(s);
-    });
+    saved.forEach(s => { if (!merged.find(r => r.id === s.id)) merged.push(s); });
     this.reviews = merged;
   }
 
@@ -98,39 +265,32 @@ export class MovieDetail implements OnInit {
     localStorage.setItem(this.reviewsStorageKey, JSON.stringify(this.reviews));
   }
 
-  // Проверяет оставил ли текущий пользователь ревью
   get myReview(): Review | null {
     const user = this.authService.getCurrentUser();
     if (!user) return null;
     return this.reviews.find(r => r.user === user) || null;
   }
 
-  get hasReviewed(): boolean {
-    return !!this.myReview;
-  }
+  get hasReviewed(): boolean { return !!this.myReview; }
 
   get displayedReviews(): Review[] {
-    return this.showAllReviews ? this.reviews : this.reviews.slice(0, 3);
+    const reversed = [...this.reviews].reverse();
+    return this.showAllReviews ? reversed : reversed.slice(0, 3);
   }
 
-  toggleViewAll(): void {
-    this.showAllReviews = !this.showAllReviews;
-  }
-
-  setRating(value: number): void {
-    this.newRating = value;
-  }
+  toggleViewAll(): void { this.showAllReviews = !this.showAllReviews; }
+  setRating(value: number): void { this.newRating = value; }
 
   submitReview(): void {
     if (!this.movie || !this.newRating || !this.newComment.trim()) return;
     if (this.hasReviewed) return;
-    const currentUser = this.authService.getCurrentUser();
     const review: Review = {
       id: Date.now(),
       movieId: this.movie.id,
-      user: currentUser || 'Guest',
+      user: this.authService.getCurrentUser() || 'Guest',
       rating: this.newRating,
-      comment: this.newComment
+      comment: this.newComment,
+      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
     };
     this.reviews.push(review);
     this.saveReviews();
@@ -138,14 +298,8 @@ export class MovieDetail implements OnInit {
     this.newComment = '';
   }
 
-  // Delete modal
-  openDeleteModal(): void {
-    this.showDeleteModal = true;
-  }
-
-  closeDeleteModal(): void {
-    this.showDeleteModal = false;
-  }
+  openDeleteModal(): void { this.showDeleteModal = true; }
+  closeDeleteModal(): void { this.showDeleteModal = false; }
 
   confirmDeleteReview(): void {
     if (!this.myReview) return;
@@ -154,7 +308,24 @@ export class MovieDetail implements OnInit {
     this.showDeleteModal = false;
   }
 
-  // Comments
+  openReportModal(commentId: number): void {
+    this.reportingCommentId = commentId;
+    this.selectedReason = '';
+    this.reportSent = false;
+    this.showReportModal = true;
+    this.openMenuCommentId = null;
+  }
+
+  closeReportModal(): void {
+    this.showReportModal = false;
+    this.reportingCommentId = null;
+    this.selectedReason = '';
+    this.reportSent = false;
+  }
+
+  selectReason(key: string): void { this.selectedReason = key; }
+  submitReport(): void { if (!this.selectedReason) return; this.reportSent = true; }
+
   loadComments(movieId: number): void {
     const raw = localStorage.getItem(`comments_${movieId}`);
     this.comments = raw ? JSON.parse(raw) : [];
@@ -167,11 +338,10 @@ export class MovieDetail implements OnInit {
 
   submitComment(): void {
     if (!this.newCommentText.trim()) return;
-    const user = this.authService.getCurrentUser() || 'Guest';
     const comment: Comment = {
       id: Date.now(),
       movieId: this.movie!.id,
-      user,
+      user: this.authService.getCurrentUser() || 'Guest',
       text: this.newCommentText.trim(),
       date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
       replyTo: this.replyingTo ? this.replyingTo.user : undefined
@@ -185,9 +355,32 @@ export class MovieDetail implements OnInit {
   deleteComment(commentId: number): void {
     this.comments = this.comments.filter(c => c.id !== commentId);
     this.saveComments();
+    this.openMenuCommentId = null;
   }
 
+  startEditing(comment: Comment): void {
+    this.editingCommentId = comment.id;
+    this.editingText = comment.text;
+    this.openMenuCommentId = null;
+  }
+
+  saveEdit(commentId: number): void {
+    if (!this.editingText.trim()) return;
+    const comment = this.comments.find(c => c.id === commentId);
+    if (comment) { comment.text = this.editingText.trim(); this.saveComments(); }
+    this.editingCommentId = null;
+    this.editingText = '';
+  }
+
+  cancelEdit(): void { this.editingCommentId = null; this.editingText = ''; }
+  isEditing(commentId: number): boolean { return this.editingCommentId === commentId; }
+
   canDeleteComment(comment: Comment): boolean {
+    const user = this.authService.getCurrentUser();
+    return !!user && comment.user === user;
+  }
+
+  isMyComment(comment: Comment): boolean {
     const user = this.authService.getCurrentUser();
     return !!user && comment.user === user;
   }
@@ -195,23 +388,20 @@ export class MovieDetail implements OnInit {
   setReplyTo(comment: Comment): void {
     this.replyingTo = comment;
     this.newCommentText = '';
+    this.openMenuCommentId = null;
   }
 
-  cancelReply(): void {
-    this.replyingTo = null;
-  }
+  cancelReply(): void { this.replyingTo = null; }
 
   toggleCommentMenu(commentId: number): void {
     this.openMenuCommentId = this.openMenuCommentId === commentId ? null : commentId;
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
+  isLoggedIn(): boolean { return this.authService.isLoggedIn(); }
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   scrollToTrailer(): void {
@@ -223,9 +413,7 @@ export class MovieDetail implements OnInit {
     return this.watchlistService.getStatus(this.movie.id);
   }
 
-  toggleWatchlistMenu(): void {
-    this.showWatchlistMenu = !this.showWatchlistMenu;
-  }
+  toggleWatchlistMenu(): void { this.showWatchlistMenu = !this.showWatchlistMenu; }
 
   addToWatchlist(): void {
     if (!this.movie) return;
@@ -244,22 +432,22 @@ export class MovieDetail implements OnInit {
     this.watchlistService.removeFromWatchlist(this.movie.id);
     this.showWatchlistMenu = false;
   }
+
   navigateToMovie(id: number): void {
-  this.router.navigate(['/movie', id]).then(() => {
-    window.scrollTo({ top: 0 });
-    const newId = id;
-    this.movie = this.movieService.getMovieById(newId);
-    this.reviewsStorageKey = `reviews_${newId}`;
-    this.loadReviews(newId);
-    this.loadComments(newId);
-    if (this.movie) {
-      this.cachedTrailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-        `https://www.youtube.com/embed/${this.movie.trailerId}`
-      );
-      this.similarMovies = this.movieService.getMovies()
-        .filter(m => m.id !== newId && m.genres.some(g => this.movie!.genres.includes(g)))
-        .slice(0, 3);
-    }
-  });
-}
+    this.router.navigate(['/movie', id]).then(() => {
+      window.scrollTo({ top: 0 });
+      this.movie = this.movieService.getMovieById(id);
+      this.reviewsStorageKey = `reviews_${id}`;
+      this.loadReviews(id);
+      this.loadComments(id);
+      if (this.movie) {
+        this.cachedTrailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          `https://www.youtube.com/embed/${this.movie.trailerId}`
+        );
+        this.similarMovies = this.movieService.getMovies()
+          .filter(m => m.id !== id && m.genres.some(g => this.movie!.genres.includes(g)))
+          .slice(0, 3);
+      }
+    });
+  }
 }

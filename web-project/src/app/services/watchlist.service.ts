@@ -25,7 +25,15 @@ export class WatchlistService {
     const list = this.load();
     const movies = this.movieService.getMovies();
     return movies.filter(movie =>
-      list.some(item => item.movieId === movie.id)
+      list.some(item => item.movieId === movie.id && item.status === 'watchlist')
+    );
+  }
+
+  getWatchedMovies(): Movie[] {
+    const list = this.load();
+    const movies = this.movieService.getMovies();
+    return movies.filter(movie =>
+      list.some(item => item.movieId === movie.id && item.status === 'watched')
     );
   }
 
