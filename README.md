@@ -1,4 +1,4 @@
-# MovieRec: Movie & Series Recommendation Platform
+# MovieRec: Movie Recommendation Platform
 
 # Project Description
 
