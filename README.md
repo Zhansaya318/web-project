@@ -6,6 +6,6 @@ A web application designed for cinema enthusiasts to organize their viewing hist
 
 # Team Members
 
-- **Serekbol Aksunkar**
-- **Amanbay Zhansaya**
-- **Korganbek Alua**
+- **Serekbol Aksunkar** Backend (models, API routing, Back-end connection)
+- **Amanbay Zhansaya** Frontend (client side)
+- **Korganbek Alua** Backend (Serializers&View logic)
